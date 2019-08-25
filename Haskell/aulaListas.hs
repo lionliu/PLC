@@ -97,4 +97,3 @@ howsTheList xs = "Uma lista" ++ case xs of
 
 -- takeWhile
 
--- fazer as questões de banco de dados do slide
