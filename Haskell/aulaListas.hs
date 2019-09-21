@@ -97,4 +97,7 @@ howsTheList xs = "Uma lista" ++ case xs of
 
 -- takeWhile
 
--- fazer as questões de banco de dados do slide
+-- Compreensão de listas
+qs :: [Int] -> [Int]
+qs [] = []
+qs (a:b) = qs [x | x <- b, x < a] ++ [a] ++ qs [x | x <- b, x >= a]
