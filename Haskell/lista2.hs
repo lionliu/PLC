@@ -1,17 +1,18 @@
 -- 1
--- a
 f :: [Int] -> [Int]
 f [x] = []
-f (x:y:ys) 
-    | x == y = x : f (y:ys)
-    | otherwise = f (y:ys)
+-- a
+-- f (x:y:ys) 
+--     | x == y = x : f (y:ys)
+--     | otherwise = f (y:ys)
 
 -- b
+f (h:hs) = [x | (x, y) <- zip (h:hs) hs, y == x]
 
 -- 2
 -- Passar com filter, para filtrar apenas os elementos que estão entre 0 e 100
 isInRange :: Int -> Bool
-isInRange x = 0 <= x && x<=100
+isInRange x = 0 <= x && x <= 100
 
 -- isEven vai servir para passar num map, para transformar um array de Int em um array de Bool
 isEven :: Int -> Bool

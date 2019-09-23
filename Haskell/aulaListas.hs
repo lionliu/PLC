@@ -72,12 +72,24 @@ mdrop _ [] = []
 mdrop 0 a = a
 mdrop n (x:xs)= mdrop (n-1) xs
 
+mtakeWhile :: (t -> Bool) -> [t] -> [t]
+mtakeWhile _ [] = []
+mtakeWhile f (x:xs)
+    | f x = x : mtakeWhile f xs
+    | otherwise = mtakeWhile f xs
+
+mdropWhile :: (t -> Bool) -> [t] -> [t]
+mdropWhile _ [] = []
+mdropWhile f (x:xs)
+    | f x = mdropWhile f xs
+    | otherwise = x : mdropWhile f xs
+
 -- InsertiontSort
 iSort :: [Int] -> [Int]
 iSort [] = []
 iSort (cabeca:cauda) = ins cabeca (iSort cauda)
 
-isn :: Int -> [Int] -> [Int]
+ins :: Int -> [Int] -> [Int]
 ins x [] = [x]
 ins x (y : ys) 
     | x <= y = x:(y:ys)
