@@ -37,8 +37,12 @@ isMatrixSquareAux (x:xs) n = (length x) == n && isMatrixSquareAux xs n
 isMatrixSquare :: [[Int]] -> Bool
 isMatrixSquare (x:xs) = isMatrixSquareAux (x:xs) (length x)
 --b
-
-
+permutaValores :: Int -> Int -> [t] -> [t]
+permutaValores x y l = init (take x l) ++ [(take y l)!!(y - 1)] ++ (take (y - x - 1) (drop x l)) ++ [(take x l)!!(x - 1)] ++ (drop y l)
+-- init (take x l): Vou pegar os primeiros x - 1 elementos de l
+-- [(take y l)!!(y - 1)] : Vou pegar o elemento na posicao y - 1 na lista dos primeiros y elementos
+-- (take (y - x - 1) (drop x l)) : Vou pegar os (y - x - 1) elementos dos x ultimos elemementos de l
+-- drop y l : pegar os ultimos y elementos de l
 
 --5
 -- Verifica se a soma dos impares é maior
