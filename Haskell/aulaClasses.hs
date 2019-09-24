@@ -29,7 +29,7 @@ instance Eq Curso where
 -- Todos os tipos que serão instancias da classe Visivel terão uma implementação do toString e do size.
 class Visivel t where
         toString :: t -> String
-        size -> :: t -> Int
+        size :: t -> Int
 
 -- Exemplo de Bool instanciado com a classe Visivel
 instance Visivel Bool where

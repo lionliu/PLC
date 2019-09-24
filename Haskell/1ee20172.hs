@@ -22,4 +22,21 @@ filtrarEInserir l n = (l1 , n * m)
         m = maximum (map product l1)
 
 -- 3
--- altMap :: (a -> b) -> (a -> b) -> [a] -> [b]
+altMap :: (a -> b) -> (a -> b) -> [a] -> [b]
+altMap f g [] = []
+altMap f g [a] = [f a]
+altMap f g (x:y:ys) = [f x] ++ [g y] ++ (altMap f g ys)
+--5
+
+data Mobile = Pendente Int | Barra Mobile Mobile
+
+-- a
+peso :: Mobile -> Int 
+peso (Pendente n) = n
+peso (Barra m1 m2) = (peso m1) + (peso m2)
+
+-- b
+balanceado :: Mobile -> Bool
+balanceado (Pendente _) = True
+balanceado (Barra m1 m2) = (peso m1) == (peso m2) && (balanceado m1) && (balanceado m2)
+
