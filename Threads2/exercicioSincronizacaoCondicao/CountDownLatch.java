@@ -9,16 +9,18 @@ public class CountDownLatch {
     public void countDown() {
         if (this.n > 0) {
             this.n--;
-        } else if (this.n == 0) {
-
+            System.out.println(n);
+        } else {
+            notifyAll();
         }
     }
 
-    public void await() {
-
+    public synchronized void await() {
+        while(this.n != 0) {
+            try {
+                wait();
+            } catch(InterruptedException e) {
+            }
+        }
     }
-
-    // public void run() {
-
-    // }
 }
