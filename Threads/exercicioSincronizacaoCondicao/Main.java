@@ -1,4 +1,5 @@
-import java.util.concurrent.CountDownLatch;
+// import java.util.concurrent.CountDownLatch;
+import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,6 +12,7 @@ public class Main {
 
 class Producer implements Runnable{
     CountDownLatch cdl;
+    Random random;
     int n;
 
     public Producer(CountDownLatch cdl, int n) {
@@ -34,5 +36,9 @@ class Consumer implements Runnable{
 
     public Consumer(CountDownLatch cdl) {
         this.cdl = cdl;
+    }
+
+    public void run() {
+        
     }
 }

@@ -12,7 +12,7 @@ public class ExercicioAula2 {
     }
 }
 
-class HelloThread extends Thread {
+class HelloThread implements Runnable {
 
     public void run() {
         System.out.println("Opa meu chapa");

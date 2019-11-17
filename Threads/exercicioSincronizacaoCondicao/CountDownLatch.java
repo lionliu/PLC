@@ -6,10 +6,10 @@ public class CountDownLatch {
         this.n = n;
     }
 
-    public void countDown() {
+    public synchronized void countDown() {
         if (this.n > 0) {
-            this.n--;
             System.out.println(n);
+            this.n--;
         } else {
             notifyAll();
         }
@@ -22,5 +22,6 @@ public class CountDownLatch {
             } catch(InterruptedException e) {
             }
         }
+        System.out.println("Sai do await");
     }
 }

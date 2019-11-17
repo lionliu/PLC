@@ -5,7 +5,8 @@ public class Drop {
     private boolean empty = true;
 
     public synchronized String take() {
-        // Como está vazio, ele vai esperar até não ficar
+        // Em tese o "buffer" tem tamanho 1 pq a gente não tá usando um array/lista de strings 
+        // Só vai sair do while quando outra thread alterar o empty, ou seja atribuir um valor a string
         while (empty) {
             try {
                 // Força a thread atual a esperar até outra thread chamar via notify
