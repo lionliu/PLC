@@ -27,7 +27,7 @@ imprimeInvertido = do
     putStrLn (reverse l2)
     putStrLn (reverse l1)
 
--- Para rodar o .hs como se fosse um script é só fazer uma funcao main e rodar no console com ./aulaIO
+-- Para rodar o .hs como se fosse um script é só fazer uma funcao main, gerar a saida com ghc(Não o ghci!) e rodar no console com ./aulaIO
 
 -- main = do
 --     return ()
