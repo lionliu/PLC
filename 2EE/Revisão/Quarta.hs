@@ -13,9 +13,11 @@ put buffer var = do
     writeTVar buffer (tempBuff ++ [var])
 
 
--- Tá dando erro pra compilar no get
 get :: Buffer a -> STM a
 get buff = do
-    (x:tempBuff) <- readTVar buff
-    writeTVar buff tempBuff
-    return x
+    tvar <- readTVar buff
+    if null tvar
+        then retry -- retry vai reiniciar a função caso o buffer esteja vazio
+        else return (head tvar)
+
+        
