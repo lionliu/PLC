@@ -15,20 +15,20 @@ waitThreads fim = do
 
 
 -- Isso é tipo classe, setta as quantidades fornecidas e se chama
-produtor :: Int -> Int -> Int -> MVar Int -> IO ()
+produtor :: TVar Int -> TVar Int -> TVar Int -> MVar Int -> IO ()
 produtor pao carne tomate fim = do
     fimAtual <- takeMVar fim
-    atomically (do
+    atomically (do 
         writeTVar pao 30
         writeTVar carne 30
-        writeTVar tomate 30
-    )
+        writeTVar tomate 30)
+        
 
     putMVar fim (fimAtual-1)
     produtor pao carne tomate fim
 
 -- Isso é tipo classe, consome os produtos, e se chama de novo
-consumidor :: Int -> Int -> Int -> MVar Int -> IO ()
+consumidor :: TVar Int -> TVar Int -> TVar Int -> MVar Int -> MVar Int -> IO ()
 consumidor pao carne tomate faca fim = do
     -- Fim == quantida de execuções
     direitoFaca <- takeMVar faca
@@ -43,9 +43,9 @@ consumidor pao carne tomate faca fim = do
 
         writeTVar pao (estoquePaoAtual-1)
         writeTVar carne (estoquePaoAtual-1)
-        writeTVar tomate (estoquePaoAtual-1)
-    )
+        writeTVar tomate (estoquePaoAtual-1))
 
+        
     putMVar faca direitoFaca
     putMVar fim (fimAtual-1)
     consumidor pao carne tomate faca fim
@@ -62,7 +62,7 @@ main = do
     -- (quantidade de execuções e o objeto de disputa: faca)
     let qntExec = 20
     lockFaca <- newMVar 0
-    qntExec = newMVar qntExec
+    qtdExec <- newMVar qntExec
 
     -- A partir de agora, pode-se iniciar a execução
 
@@ -70,7 +70,7 @@ main = do
     forkIO(produtor pao carne tomate qtdExec)
     forkIO(consumidor pao carne tomate lockFaca qtdExec)
     forkIO(consumidor pao carne tomate lockFaca qtdExec)
-    waitThreads fim
+    waitThreads qtdExec
     return ()
     -- O main chamou as threads,
     -- elas executam waitThreads e depois o código acaba
