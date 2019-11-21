@@ -14,9 +14,11 @@ waitThreads fim = do
         return ()
 
 
--- Isso é tipo classe, setta as quantidades fornecidas e se chama
+-- Isso é tipo classe, seta as quantidades fornecidas e se chama
 produtor :: TVar Int -> TVar Int -> TVar Int -> MVar Int -> IO ()
 produtor pao carne tomate fim = do
+    -- Quando se pega uma MVar, funcionaria como uma condicional, pois se a MVar não estivesse disponivel, a thread travaria até ficar disponivel.
+    -- A mesma coisa seria analoga ao comsuimidor, quando ele der um takeMVar depois desse ponto, ele que irá travar até chegar no putMVar
     fimAtual <- takeMVar fim
     atomically (do 
         writeTVar pao 30
@@ -60,9 +62,8 @@ main = do
 
     -- Controla a concorrência 
     -- (quantidade de execuções e o objeto de disputa: faca)
-    let qntExec = 20
-    lockFaca <- newMVar 0
-    qtdExec <- newMVar qntExec
+    lockFaca <- newMVar 0 -- Faca tem que ser MVar mesmo, pois vai funcionar como um "monitor"
+    qtdExec <- newMVar 20
 
     -- A partir de agora, pode-se iniciar a execução
 
