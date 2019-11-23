@@ -2,7 +2,7 @@
 
 public class Segunda {}
 
-public class BlockingQueue implements Runnable {
+public class BlockingQueue{
 
     public int capacidadeMaxima;
     public int indexPut;
