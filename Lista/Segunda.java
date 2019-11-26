@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+// TODO: Fazer consumidores como os jogadores e um produtor de cadeiras. Na primeira rodada, criar N consumidores e produzir N-1 cadeiras, e a cada rodada ir decrementando o N, até que reste 1 jogador. 
+
 public class Segunda {
     public static void main(String[] args) {
         UtilidadePublica up = new UtilidadePublica();
@@ -22,7 +24,7 @@ public class Segunda {
         }
 
         while(cadeiras.size() > 0) {
-            
+
             // Inicializa o jogo;
             for(int i = 0; i < jogadores.size(); i++) {
                 (new Thread(jogadores.get(i))).start();
@@ -30,7 +32,7 @@ public class Segunda {
 
             while(!up.isAllCadeirasOcupadas(cadeiras)) {
                 // Enquanto todas as cadeiras não estiverem ocupadas o jogo vai rolando
-
+                
             }
 
             up.reiniciaJogo(cadeiras, jogadores);
