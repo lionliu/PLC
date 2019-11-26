@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 // TODO: Fazer consumidores como os jogadores e um produtor de cadeiras. Na primeira rodada, criar N consumidores e produzir N-1 cadeiras, e a cada rodada ir decrementando o N, até que reste 1 jogador. 
-
+// O produtor pode gerar um atomic integer = (qt jogadores-1), sendo que cada jogador(consumidor) subtrai 1 do valor e coloca a flag sentado = 1
 public class Segunda {
     public static void main(String[] args) {
         UtilidadePublica up = new UtilidadePublica();
