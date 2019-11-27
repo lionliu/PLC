@@ -8,36 +8,28 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Segunda {
     public static void main(String[] args) {
         UtilidadePublica up = new UtilidadePublica();
-        List<AtomicBoolean> cadeiras = new ArrayList<AtomicBoolean>();
         int qtJogadores;
         Scanner s = new Scanner(System.in);
         qtJogadores = s.nextInt();
-        List<Jogador> jogadores = new ArrayList<Jogador>();
-        for(int i = 0; i < (qtJogadores - 1); i++) {
-            
-            cadeiras.add(new AtomicBoolean());
-           
-        }
+        Jogo j = new Jogo(qtJogadores);
 
-         for(int i = 0; i < (qtJogadores - 1); i++){
-            jogadores.add(new Jogador("Jogador " + i, cadeiras));
-        }
 
-        while(cadeiras.size() > 0) {
+        while(j.N > 1) {
 
             // Inicializa o jogo;
-            for(int i = 0; i < jogadores.size(); i++) {
-                (new Thread(jogadores.get(i))).start();
+            (new Thread(j.p)).start();
+            for(int i = 0; i < j.jogadores.size(); i++) {
+                (new Thread(j.jogadores.get(i))).start();
             }
 
-            while(!up.isAllCadeirasOcupadas(cadeiras)) {
+            while(!up.isAllCadeirasOcupadas(j.cadeiras)) {
                 // Enquanto todas as cadeiras não estiverem ocupadas o jogo vai rolando
                 
             }
 
-            up.reiniciaJogo(cadeiras, jogadores);
+            up.reiniciaJogo(j.cadeiras, j.jogadores);
         }
-        System.out.println(jogadores.get(0) + " ganhou");
+        System.out.println(j.jogadores.get(0) + " ganhou");
     }
 
 }
@@ -47,21 +39,21 @@ class Jogador implements Runnable{
 
     public String name;
     public Boolean sentado;
-    public List<AtomicBoolean> cadeiras;
+    public Jogo j;
     UtilidadePublica up;
 
-    public Jogador(String n, List<AtomicBoolean> c){
+    public Jogador(String n, Jogo j){
         this.name = n;
-        this.cadeiras = c;
+        this.j = j;
     }
 
     public void run() {
         // Roda o run até que ele sente ou todas as cadeiras estejam ocupadas
-        while(!(this.sentado) && !this.up.isAllCadeirasOcupadas(this.cadeiras)) {
-            for(int i = 0; i < this.cadeiras.size(); i++) {
+        while(!(this.sentado) && !this.up.isAllCadeirasOcupadas(this.j.cadeiras)) {
+            for(int i = 0; i < this.j.cadeiras.size(); i++) {
                 // Se a caderia não estiver ocupada,ocupa ela
-                if(!this.cadeiras.get(i).get()) {
-                    this.cadeiras.get(i).set(true);
+                if(!this.j.cadeiras.get(i).get()) {
+                    this.j.cadeiras.get(i).set(true);
                     this.sentado = true;
                 }
             }
@@ -78,6 +70,7 @@ class Jogador implements Runnable{
 class UtilidadePublica {
     public boolean isAllCadeirasOcupadas(List<AtomicBoolean> cadeiras) {
         for (int i = 0; i < cadeiras.size(); i++) {
+            System.out.println(i);
             if (!cadeiras.get(i).get()) {
                 return false;
             }
@@ -104,6 +97,44 @@ class UtilidadePublica {
     }
 }
 
-// class Jogo {
+class Producer implements Runnable {
 
-// }
+    private Jogo j;
+
+    public Producer(Jogo j) {
+        this.j = j;
+    }
+
+    public void run() {
+        // Gerar N-1 cadeiras
+        synchronized(j.cadeiras) {
+            for (int i = 0; i < (j.N - 1); i++) {
+                j.cadeiras.add(new AtomicBoolean());
+            }
+        }
+    }
+}
+
+class Jogo {
+
+
+    public List<AtomicBoolean> cadeiras;
+    public List<Jogador> jogadores;
+    public int N;
+    public Producer p;
+
+    public Jogo(int n) {
+        this.N = n;
+        this.p = new Producer(this);
+        this.jogadores = generateNJogadores();
+    }
+
+    List<Jogador> generateNJogadores() {
+        List<Jogador> l = new ArrayList<Jogador>();
+
+        for(int i = 0; i < this.N; i++) {
+            l.add(new Jogador("Jogador " + i, this));
+        }
+        return l;
+    }
+}
